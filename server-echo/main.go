@@ -1,6 +1,10 @@
 package main
 
-import "github.com/labstack/echo"
+import (
+	"net/http"
+
+	"github.com/labstack/echo"
+)
 
 // go mod init <url>/<package>
 // go mod init github.com/<user>/<repo>
@@ -18,6 +22,10 @@ func postHandler(c echo.Context) error {
 }
 
 func getHandler(c echo.Context) error {
-	c.String(200, "hello world from echo")
+	//c.String(200, "hello world from echo")
+	c.JSON(http.StatusOK, map[string]string{
+		"name":  "john snow",
+		"house": "stark",
+	})
 	return nil
 }
