@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -20,6 +21,9 @@ func main() {
 			"house": "stark",
 		})
 		w.Write(jsonB)
+	})
+	http.HandleFunc("/error", func(w http.ResponseWriter, r *http.Request) {
+		log.Fatal("error")
 	})
 	fmt.Println("Server running on localhost:8080")
 	http.ListenAndServe(":8080", nil)
