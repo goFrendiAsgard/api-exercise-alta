@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -18,6 +17,10 @@ type Book struct {
 	Publisher string `json:"publisher" form:"publisher"`
 }
 
+// func (Book) TableName() string {
+// 	return "buku"
+// }
+
 var db *gorm.DB
 
 func main() {
@@ -28,8 +31,6 @@ func main() {
 		panic(err)
 	}
 	db.AutoMigrate(&Book{})
-	fmt.Println(db)
-
 	e := echo.New()
 	e.GET("/books", GetBooks)
 	e.GET("/books/:id", GetOneBook)
@@ -93,6 +94,13 @@ func GetOneBook(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
+		})
+	}
+	var count int64
+	db.Model(&Book{}).Where("id=?", id).Count(&count)
+	if count == 0 {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"message": "not found",
 		})
 	}
 	var book Book
