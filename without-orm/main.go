@@ -19,13 +19,13 @@ func main() {
 		panic(err.Error())
 	}
 	defer db.Close()
-	results, err := db.Query("SELECT id, title, author from books")
+	row, err := db.Query("SELECT id, title, author from books")
 	if err != nil {
 		panic(err.Error())
 	}
-	for results.Next() {
+	for row.Next() {
 		var book Book
-		err = results.Scan(&book.Id, &book.Title, &book.Author)
+		err = row.Scan(&book.Id, &book.Title, &book.Author)
 		if err != nil {
 			panic(err.Error())
 		}
