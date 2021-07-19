@@ -1,13 +1,16 @@
 package config
 
 import (
+	"alta/training/models"
 	"os"
+	"strconv"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
+var HTTP_PORT int
 
 func InitDb() {
 	connectionString := os.Getenv("CONNECTION_STRING")
@@ -19,6 +22,14 @@ func InitDb() {
 	InitMigrate()
 }
 
-func InitMigrate() {
+func InitPort() {
+	var err error
+	HTTP_PORT, err = strconv.Atoi(os.Getenv("HTTP_PORT"))
+	if err != nil {
+		panic(err)
+	}
+}
 
+func InitMigrate() {
+	DB.AutoMigrate(&models.User{})
 }
