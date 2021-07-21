@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"alta/training/lib/database"
+	"alta/training/middlewares"
 	"alta/training/models"
 	"net/http"
 	"strconv"
@@ -21,9 +22,9 @@ func GetUserControllers(c echo.Context) error {
 }
 
 func LoginUsersControllers(c echo.Context) error {
-	user := models.User{}
-	c.Bind(&user)
-	users, err := database.LoginUsers(&user)
+	userData := models.User{}
+	c.Bind(&userData)
+	users, err := database.LoginUsers(userData.Email, userData.Password)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -38,7 +39,13 @@ func GetUserDetailControllers(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	users, err := database.GetDetailUsers((id))
+	// ini dari JWT token yang dikirim via header
+	loggedInUserId := middlewares.ExtractTokenUserId(c)
+	// kalau loggedInUserId tidak sama dengan id yang dari parameter, kembalikan response 401
+	if loggedInUserId != id {
+		return echo.NewHTTPError(http.StatusUnauthorized, "unauthorized access, you can only see your own")
+	}
+	users, err := database.GetDetailUsers(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}

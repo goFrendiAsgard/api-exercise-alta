@@ -22,9 +22,10 @@ func GetDetailUsers(userId int) (interface{}, error) {
 	return user, nil
 }
 
-func LoginUsers(user *models.User) (interface{}, error) {
+func LoginUsers(email, password string) (interface{}, error) {
+	var user models.User
 	var err error
-	if err = config.DB.Where("email = ? AND password = ?", user.Email, user.Password).Error; err != nil {
+	if err = config.DB.Where("email = ? AND password = ?", email, password).First(&user).Error; err != nil {
 		return nil, err
 	}
 	user.Token, err = middlewares.CreateToken(int(user.ID))
