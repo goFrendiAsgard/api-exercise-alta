@@ -2,31 +2,17 @@ package controller
 
 import (
 	"alta/tddmock/config"
+	"alta/tddmock/database"
 	"alta/tddmock/model"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/labstack/echo/v4"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"github.com/labstack/echo"
 )
 
-func createTestDB() (*gorm.DB, error) {
-	connectionString := config.TEST_DB_CONNECTION_STRING
-	return gorm.Open(mysql.Open(connectionString), &gorm.Config{})
-}
-
-func createTestDBBookController(db *gorm.DB) (echo.HandlerFunc, error) {
-	// bikin test model
-	m := model.NewGormBookModel(db)
-	// bikin controller
-	c := CreateBookController(m)
-	return c, nil
-}
-
-func testController(t *testing.T, bookController echo.HandlerFunc) {
+func testGetBookController(t *testing.T, bookController echo.HandlerFunc) {
 	// coba request
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
@@ -52,28 +38,32 @@ func testController(t *testing.T, bookController echo.HandlerFunc) {
 	}
 }
 
-func TestDBBookController(t *testing.T) {
+func TestDBGetBookController(t *testing.T) {
 	// bikin db
-	db, err := createTestDB()
+	db, err := database.CreateDB(config.TEST_DB_CONNECTION_STRING)
 	if err != nil {
 		t.Error(err)
 	}
+	db.AutoMigrate(&model.Book{})
+	db.Delete(&model.Book{}, "1=1")
+	m := model.NewGormBookModel(db)
 	// bikin controller
-	bookController, err := createTestDBBookController(db)
+	bookController := CreateGetBookController(m)
 	if err != nil {
 		t.Error(err)
 	}
-	// insert data baru
-	db.Save(&model.Book{Title: "Harry Potter"})
-	// test controller
-	testController(t, bookController)
-}
-
-func TestMockBookController(t *testing.T) {
-	m := model.NewMockBookModel()
-	bookController := CreateBookController(m)
 	// insert data baru
 	m.Insert(model.Book{Title: "Harry Potter"})
 	// test controller
-	testController(t, bookController)
+	testGetBookController(t, bookController)
+	db.Delete(&model.Book{}, "1=1")
+}
+
+func TestMockGetBookController(t *testing.T) {
+	m := model.NewMockBookModel()
+	bookController := CreateGetBookController(m)
+	// insert data baru
+	m.Insert(model.Book{Title: "Harry Potter"})
+	// test controller
+	testGetBookController(t, bookController)
 }
