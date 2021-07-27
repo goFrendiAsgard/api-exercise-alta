@@ -1,4 +1,11 @@
 mode: set
+alta/tddmock/controller/book.go:10.74,11.36 1 1
+alta/tddmock/controller/book.go:11.36,14.3 2 1
+alta/tddmock/controller/book.go:17.75,18.36 1 1
+alta/tddmock/controller/book.go:18.36,22.3 3 1
+alta/tddmock/model/gormBookModel.go:9.38,13.2 3 1
+alta/tddmock/model/gormBookModel.go:15.49,18.2 2 1
+alta/tddmock/model/gormBookModel.go:20.51,22.2 1 1
 alta/tddmock/model/mockBookModel.go:7.38,9.2 1 1
 alta/tddmock/model/mockBookModel.go:11.49,14.2 2 1
 alta/tddmock/model/mockBookModel.go:16.40,20.2 1 1
@@ -8,8 +15,3 @@ alta/tddmock/main.go:17.16,18.13 1 0
 alta/tddmock/database/database.go:8.58,10.16 2 1
 alta/tddmock/database/database.go:13.2,13.16 1 1
 alta/tddmock/database/database.go:10.16,12.3 1 0
-alta/tddmock/controller/book.go:9.74,10.36 1 1
-alta/tddmock/controller/book.go:10.36,13.3 2 1
-alta/tddmock/model/gormBookModel.go:9.38,13.2 3 1
-alta/tddmock/model/gormBookModel.go:15.49,18.2 2 1
-alta/tddmock/model/gormBookModel.go:20.51,22.2 1 1
