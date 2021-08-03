@@ -10,7 +10,7 @@
 * Launch an EC2 instance (Using ubuntu is suggested, ensure you choose the free-tier plan)
 * Create pair and download the key
 * Look for your instance detail (IPv4 address/IPv4 DNS)
-* Login to your EC2 by invoking: `ssh -i ssh -i personal-aws.pem ubuntu@ec2-18-142-95-76.ap-southeast-1.compute.amazonaws.com` (`personal-aws.pem` is your key, while `ubuntu@ec2-18-142-95-76.ap-southeast-1.compute.amazonaws.com` is your IPv4 DNS)
+* Login to your EC2 by invoking: `ssh -i personal-aws.pem ubuntu@ec2-18-142-95-76.ap-southeast-1.compute.amazonaws.com` (`personal-aws.pem` is your key, while `ubuntu@ec2-18-142-95-76.ap-southeast-1.compute.amazonaws.com` is your IPv4 DNS)
 * Install docker:
 
 ```bash
@@ -34,3 +34,7 @@ scp -i ~/personal-aws.pem README.md ubuntu@ec2-18-142-95-76.ap-southeast-1.compu
 # copy something.txt from ec2 to local machine
 scp -i ~/personal-aws.pem ubuntu@ec2-18-142-95-76.ap-southeast-1.compute.amazonaws.com:/home/ubuntu/something.txt ./
 ```
+
+# Okay, This is free right?
+
+Yes, just make sure you turn off the EC2 once it is not used.
